@@ -65,6 +65,7 @@ node --input-type=module -e "import('./worker-src/client.js').then(m=>{new Funct
 - (v6) 학생 화면 상단에 `관찰일지 등록` 버튼, `내 관찰일지` / `우리 반 식물 모음` 탭
 - (v6) 모둠 관찰일지 등록 시 이미 속한 모둠을 자동으로 불러와 모둠원 이름을 다시 적지 않아도 됨
 - (v6) 관찰 기록 고치기·삭제(`PATCH`/`DELETE /api/observations/:id`), 사진 교체·삭제 시 이전 R2 사진 정리 — 본인 또는 같은 모둠원만 가능
+- 교사도 `예시 관찰일지 등록`으로 개인 관찰일지를 만들 수 있고(`projects.owner_role = teacher`, 마이그레이션 `drizzle/0003`), 학생에게는 ⭐ 선생님 예시로 맨 앞에 보이며 읽기만 가능합니다. Vercel은 `vercel/lib/schema.js`의 `SCHEMA_UPGRADES`가 시작할 때 컬럼을 추가합니다.
 - (v6) `우리 반 식물 모음`: 대표 사진·관찰 횟수·단계가 보이는 바둑판 카드와 전체/개인/모둠/내 기록 필터
 
 ## 데이터와 보안 주의사항

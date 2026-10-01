@@ -1,7 +1,7 @@
 // Adapters that give worker-src the same env.DB (D1) and env.BUCKET (R2) interface on Vercel.
 import { neon } from '@neondatabase/serverless';
 import { put, get, del } from '@vercel/blob';
-import { SCHEMA_SQL } from './schema.js';
+import { SCHEMA_SQL, SCHEMA_UPGRADES } from './schema.js';
 
 // D1 uses "?" placeholders; Postgres uses $1, $2, ...
 export function toPg(sql) {
@@ -15,8 +15,8 @@ export function toPg(sql) {
 
 async function migrate(client) {
   const rows = await client.query("SELECT to_regclass('public.sessions') AS t");
-  if (rows[0] && rows[0].t) return;
-  for (const statement of SCHEMA_SQL) await client.query(statement);
+  if (!(rows[0] && rows[0].t)) for (const statement of SCHEMA_SQL) await client.query(statement);
+  for (const statement of SCHEMA_UPGRADES) await client.query(statement);
 }
 
 // client: { query(text, params) -> Promise<rows>, transaction(queries) }  (the neon() HTTP client)

@@ -4,7 +4,7 @@ export const projects = sqliteTable("projects", {
   id: text("id").primaryKey(), classCode: text("class_code").notNull(), studentName: text("student_name").notNull(),
   plantName: text("plant_name").notNull(), ownerName: text("owner_name").notNull(), startDate: text("start_date").notNull(),
   growType: text("grow_type", { enum: ["individual", "group"] }).notNull().default("individual"),
-  groupName: text("group_name").notNull().default(""), memberNames: text("member_names").notNull().default(""),
+  groupName: text("group_name").notNull().default(""), memberNames: text("member_names").notNull().default(""), ownerRole: text("owner_role", { enum: ["student", "teacher"] }).notNull().default("student"),
   targetDate: text("target_date"), growingLocation: text("growing_location").notNull().default(""), supplies: text("supplies").notNull().default(""),
   seasonNote: text("season_note").notNull().default(""), environmentNote: text("environment_note").notNull().default(""),
   commitment: text("commitment").notNull().default(""), harvestUse: text("harvest_use").notNull().default(""), problems: text("problems").notNull().default(""),

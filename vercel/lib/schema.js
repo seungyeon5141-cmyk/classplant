@@ -22,7 +22,8 @@ export const SCHEMA_SQL = [
     updated_at TEXT NOT NULL,
     grow_type TEXT NOT NULL DEFAULT 'individual',
     group_name TEXT NOT NULL DEFAULT '',
-    member_names TEXT NOT NULL DEFAULT ''
+    member_names TEXT NOT NULL DEFAULT '',
+    owner_role TEXT NOT NULL DEFAULT 'student'
   )`,
   `CREATE TABLE IF NOT EXISTS observations (
     id TEXT PRIMARY KEY NOT NULL,
@@ -65,4 +66,9 @@ export const SCHEMA_SQL = [
   `CREATE INDEX IF NOT EXISTS idx_observations_project_date ON observations(project_id, observed_at, created_at)`,
   `CREATE INDEX IF NOT EXISTS idx_accounts_class_role ON accounts(class_code, role, name)`,
   `CREATE INDEX IF NOT EXISTS idx_sessions_account ON sessions(account_id, expires_at)`,
+];
+
+// Run on every cold start so databases created before a change get the new columns (drizzle/0003~).
+export const SCHEMA_UPGRADES = [
+  `ALTER TABLE projects ADD COLUMN IF NOT EXISTS owner_role TEXT NOT NULL DEFAULT 'student'`,
 ];
