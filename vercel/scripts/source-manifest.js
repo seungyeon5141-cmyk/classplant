@@ -1,4 +1,5 @@
-{
+// Pinned GitHub commit and SHA-1 of the files direct Vercel deployments load at runtime.
+export default {
   "repo": "seungyeon5141-cmyk/classplant",
   "commit": "0bd363545948f8eaa31f6c30310d9c88fbcef696",
   "files": {
@@ -9,4 +10,4 @@
     "worker-src/client.js": "b0f24872a2ad1e9a32ce35e01045592741692eaf",
     "worker-src/styles.js": "2785c3facc3891b2865dce4ff3d9fa1e8e0135a9"
   }
-}
+};

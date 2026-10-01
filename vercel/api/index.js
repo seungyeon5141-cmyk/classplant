@@ -1,42 +1,43 @@
 // Vercel entry: runs the same Worker code (worker-src) with Postgres/Blob adapters in place of D1/R2.
 // vercel.json rewrites every path to /api/index?__path=<original path>; restore it before routing.
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import { createEnv } from '../lib/vercel-env.js';
-import manifest from '../scripts/source-manifest.json' with { type: 'json' };
+import manifest from '../scripts/source-manifest.js';
 
 let app;
 
 const sha1 = (buf) => createHash('sha1').update(buf).digest('hex');
+// Native dynamic import that a build step cannot rewrite into require().
+const importModule = new Function('specifier', 'return import(specifier)');
 
 // Direct deployments do not carry worker-src, so fetch it once per instance from the
 // pinned GitHub commit and verify every file's SHA-1 before importing it.
 async function fetchWorker() {
-  const dir = '/tmp/plant-src-' + manifest.commit.slice(0, 12);
+  const dir = '/tmp/plant-src-v2-' + manifest.commit.slice(0, 12);
   await mkdir(dir + '/worker-src', { recursive: true });
-  // Mark the folder as ES modules so Node does not load the files as CommonJS.
-  await writeFile(dir + '/package.json', '{"type":"module"}\n');
   const base = `https://raw.githubusercontent.com/${manifest.repo}/${manifest.commit}/vercel/`;
   for (const [path, hash] of Object.entries(manifest.files)) {
     if (!path.startsWith('worker-src/')) continue;
-    const target = dir + '/' + path;
-    const existing = await readFile(target).catch(() => null);
-    if (existing && sha1(existing) === hash) continue;
+    // Saved as .mjs so every Node version loads them as ES modules.
+    const target = dir + '/' + path.replace(/\.js$/, '.mjs');
+    if (await readFile(target).catch(() => null)) continue;
     const res = await fetch(base + path);
     if (!res.ok) throw new Error(`download failed ${path}: ${res.status}`);
     const buf = Buffer.from(await res.arrayBuffer());
     if (sha1(buf) !== hash) throw new Error(`checksum mismatch ${path}`);
-    await writeFile(target, buf);
+    const code = buf.toString('utf8').replace(/from '\.\/(html|styles|client)\.js'/g, "from './$1.mjs'");
+    await writeFile(target + '.tmp', code);
+    await rename(target + '.tmp', target);
   }
-  return (await import(pathToFileURL(dir + '/worker-src/index.js').href)).default;
+  return (await importModule(pathToFileURL(dir + '/worker-src/index.mjs').href)).default;
 }
 
 async function loadWorker() {
   try {
-    return (await import('../worker-src/index.js')).default;
-  } catch (e) {
-    if (e && e.code !== 'ERR_MODULE_NOT_FOUND') throw e;
+    return (await importModule(new URL('../worker-src/index.js', import.meta.url).href)).default;
+  } catch {
     return fetchWorker();
   }
 }
@@ -72,7 +73,8 @@ export default {
     } catch (e) {
       app = null;
       console.error('failed to load app', e);
-      return new Response('앱을 불러오지 못했어요: ' + String(e && e.message || e), { status: 500, headers: { 'content-type': 'text/plain; charset=utf-8' } });
+      const where = String(e && e.stack || '').split('\n').slice(0, 4).join('\n');
+      return new Response('앱을 불러오지 못했어요: ' + String(e && e.message || e) + '\n\n' + where, { status: 500, headers: { 'content-type': 'text/plain; charset=utf-8' } });
     }
     const req = originalRequest(request);
     if (new URL(req.url).pathname === '/api/health') return health(app.env);
