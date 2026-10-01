@@ -10,7 +10,7 @@
 - 테이블은 첫 요청 때 `vercel/lib/schema.js`로 자동 생성됩니다.
 - Vercel 함수 요청 본문 한도(4.5MB) 때문에 브라우저에서 큰 사진을 자동으로 줄인 뒤 올립니다.
 - `worker-src` 수정 후 `node scripts/sync-vercel.mjs` 실행 → 커밋·푸시 → Vercel 배포.
-- 현재 Vercel이 GitHub 저장소를 읽지 못해(`git_info_fail`) Git 자동 배포가 안 됩니다. 대신 직접 배포를 씁니다: 푸시한 커밋 해시와 파일 SHA-1을 `vercel/scripts/source-manifest.json`에 적고, 작은 파일(package.json, vercel.json, api/index.js, scripts/*)만 올리면 설치 단계(`npm install && node scripts/fetch-src.mjs`)에서 GitHub의 해당 커밋 파일을 내려받아 SHA-1을 검증합니다.
+- 현재 Vercel이 GitHub 저장소를 읽지 못해(`git_info_fail`) Git 자동 배포가 안 됩니다. 대신 직접 배포를 씁니다: `vercel/` 안의 작은 파일(package.json, vercel.json, api/index.js, lib/*, scripts/source-manifest.json, public/robots.txt)만 올리고, `worker-src` 네 파일은 함수가 처음 실행될 때 `source-manifest.json`에 적힌 GitHub 커밋에서 내려받아 SHA-1을 검증한 뒤 사용합니다. `worker-src`를 바꾸면 푸시한 뒤 manifest의 커밋 해시와 SHA-1을 갱신해 함께 올리세요. 상태 점검: `/api/health`
 - 주소: https://class-plant-journal.vercel.app/
 
 ## 이전 OpenAI Sites 사이트

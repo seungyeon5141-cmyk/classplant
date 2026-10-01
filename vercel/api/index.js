@@ -1,13 +1,42 @@
 // Vercel entry: runs the same Worker code (worker-src) with Postgres/Blob adapters in place of D1/R2.
 // vercel.json rewrites every path to /api/index?__path=<original path>; restore it before routing.
+import { createHash } from 'node:crypto';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+import { createEnv } from '../lib/vercel-env.js';
+import manifest from '../scripts/source-manifest.json' with { type: 'json' };
+
 let app;
 
-async function load() {
-  const [{ default: worker }, { createEnv }] = await Promise.all([
-    import('../worker-src/index.js'),
-    import('../lib/vercel-env.js'),
-  ]);
-  return { worker, env: createEnv(process.env) };
+const sha1 = (buf) => createHash('sha1').update(buf).digest('hex');
+
+// Direct deployments do not carry worker-src, so fetch it once per instance from the
+// pinned GitHub commit and verify every file's SHA-1 before importing it.
+async function fetchWorker() {
+  const dir = '/tmp/plant-src-' + manifest.commit.slice(0, 12);
+  await mkdir(dir + '/worker-src', { recursive: true });
+  const base = `https://raw.githubusercontent.com/${manifest.repo}/${manifest.commit}/vercel/`;
+  for (const [path, hash] of Object.entries(manifest.files)) {
+    if (!path.startsWith('worker-src/')) continue;
+    const target = dir + '/' + path;
+    const existing = await readFile(target).catch(() => null);
+    if (existing && sha1(existing) === hash) continue;
+    const res = await fetch(base + path);
+    if (!res.ok) throw new Error(`download failed ${path}: ${res.status}`);
+    const buf = Buffer.from(await res.arrayBuffer());
+    if (sha1(buf) !== hash) throw new Error(`checksum mismatch ${path}`);
+    await writeFile(target, buf);
+  }
+  return (await import(pathToFileURL(dir + '/worker-src/index.js').href)).default;
+}
+
+async function loadWorker() {
+  try {
+    return (await import('../worker-src/index.js')).default;
+  } catch (e) {
+    if (e && e.code !== 'ERR_MODULE_NOT_FOUND') throw e;
+    return fetchWorker();
+  }
 }
 
 function originalRequest(request) {
@@ -37,7 +66,7 @@ async function health(env) {
 export default {
   async fetch(request) {
     try {
-      app = app || (await load());
+      app = app || { worker: await loadWorker(), env: createEnv(process.env) };
     } catch (e) {
       app = null;
       console.error('failed to load app', e);
