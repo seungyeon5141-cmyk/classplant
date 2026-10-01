@@ -1,0 +1,12 @@
+{
+  "name": "class-plant-journal-vercel",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "@vercel/blob": "2.8.0"
+  }
+}

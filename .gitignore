@@ -47,3 +47,7 @@ next-env.d.ts
 package-stage-*/
 *.tar.gz
 *.tsbuildinfo
+
+# Vercel deployment folder
+/vercel/node_modules/
+/vercel/.vercel/
