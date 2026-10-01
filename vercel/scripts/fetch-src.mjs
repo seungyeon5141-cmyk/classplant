@@ -7,6 +7,10 @@ import { dirname } from 'node:path';
 
 const manifest = JSON.parse(readFileSync(new URL('./source-manifest.json', import.meta.url), 'utf8'));
 const base = `https://raw.githubusercontent.com/${manifest.repo}/${manifest.commit}/vercel/`;
+// Static output folder (kept empty so source files are not served as static files).
+mkdirSync('public', { recursive: true });
+writeFileSync('public/robots.txt', 'User-agent: *\nDisallow: /\n');
+
 for (const [path, sha1] of Object.entries(manifest.files)) {
   if (existsSync(path)) continue;
   const res = await fetch(base + path);
