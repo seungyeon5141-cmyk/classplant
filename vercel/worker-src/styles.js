@@ -48,4 +48,5 @@ dialog{border:0;padding:0;border-radius:29px;width:min(660px,calc(100% - 28px));
 .account-row{grid-template-columns:1fr 90px auto}
 .account-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
 @media(max-width:560px){.account-row{grid-template-columns:1fr}.account-actions{justify-content:flex-start}}
+@media(max-width:560px){.view-tabs{gap:5px}.view-tab{flex:1 1 auto;padding:9px 7px;font-size:12.5px;gap:4px;white-space:nowrap}.view-tab span:first-child{display:none}}
 `;
