@@ -1,0 +1,12 @@
+{
+  "repo": "seungyeon5141-cmyk/classplant",
+  "commit": "0bd363545948f8eaa31f6c30310d9c88fbcef696",
+  "files": {
+    "lib/schema.js": "3782afff57ecfd30b92f4ecd37f6b80278401551",
+    "lib/vercel-env.js": "ddbb2039459a03b930cebf2bf18206182cbb4a7c",
+    "worker-src/index.js": "fc65a8a1a560b797d4919b5524528fbc825d9803",
+    "worker-src/html.js": "babce8a6bdf744b81281b45d205deadce022b3bc",
+    "worker-src/client.js": "b0f24872a2ad1e9a32ce35e01045592741692eaf",
+    "worker-src/styles.js": "2785c3facc3891b2865dce4ff3d9fa1e8e0135a9"
+  }
+}
