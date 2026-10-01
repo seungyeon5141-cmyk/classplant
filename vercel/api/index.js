@@ -15,6 +15,8 @@ const sha1 = (buf) => createHash('sha1').update(buf).digest('hex');
 async function fetchWorker() {
   const dir = '/tmp/plant-src-' + manifest.commit.slice(0, 12);
   await mkdir(dir + '/worker-src', { recursive: true });
+  // Mark the folder as ES modules so Node does not load the files as CommonJS.
+  await writeFile(dir + '/package.json', '{"type":"module"}\n');
   const base = `https://raw.githubusercontent.com/${manifest.repo}/${manifest.commit}/vercel/`;
   for (const [path, hash] of Object.entries(manifest.files)) {
     if (!path.startsWith('worker-src/')) continue;
