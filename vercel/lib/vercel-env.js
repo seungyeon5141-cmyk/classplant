@@ -67,5 +67,6 @@ export function createEnv(vars) {
   return {
     DB: url ? makeDB(neon(url)) : null,
     BUCKET: vars.BLOB_READ_WRITE_TOKEN ? makeBucket({ put, get, del }) : null,
+    TEACHER_SIGNUP_CODE: vars.TEACHER_SIGNUP_CODE || '',
   };
 }
