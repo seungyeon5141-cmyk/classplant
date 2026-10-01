@@ -45,4 +45,7 @@ dialog{border:0;padding:0;border-radius:29px;width:min(660px,calc(100% - 28px));
 .tile-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
 .tile-meta span{background:var(--mint-2);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:750;color:var(--muted)}
 @media(max-width:560px){.view-tabs{padding:0 14px 9px}.view-tab{flex:1;justify-content:center;padding:9px 10px;font-size:14px}.plant-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.plant-tile-body{padding:10px 11px 12px}.plant-tile-body strong{font-size:15px}.plant-tile-emoji{font-size:48px}}
+.account-row{grid-template-columns:1fr 90px auto}
+.account-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}
+@media(max-width:560px){.account-row{grid-template-columns:1fr}.account-actions{justify-content:flex-start}}
 `;
