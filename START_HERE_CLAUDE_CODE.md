@@ -2,7 +2,16 @@
 
 이 폴더는 현재 배포 중인 학급용 식물 관찰일지 웹앱의 소스 코드입니다.
 
-## 현재 사이트
+## Vercel 배포 (현재 기준)
+
+- Vercel 프로젝트: `class-plant-journal` (루트 디렉터리 `vercel/`, 함수 리전 `sin1`)
+- 주소: https://class-plant-journal-seungyeon5141-9310.vercel.app/
+- `vercel/api/index.js`가 `worker-src`의 Worker 코드를 그대로 실행하고, `vercel/lib/vercel-env.js`가 D1→Neon Postgres, R2→비공개 Vercel Blob 어댑터를 제공합니다.
+- 테이블은 첫 요청 때 `vercel/lib/schema.js`로 자동 생성됩니다.
+- Vercel 함수 요청 본문 한도(4.5MB) 때문에 브라우저에서 큰 사진을 자동으로 줄인 뒤 올립니다.
+- `worker-src` 수정 후 `node scripts/sync-vercel.mjs` 실행 → 커밋·푸시 → Vercel 배포.
+
+## 이전 OpenAI Sites 사이트
 
 - 주소: https://class-plant-journal.seungyeonoh.chatgpt.site/
 - Sites 프로젝트 ID: `appgprj_6abc7ef45ee08191a8464d00c0081134`
