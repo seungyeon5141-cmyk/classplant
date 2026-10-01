@@ -1,13 +1,13 @@
 // Pinned GitHub commit and SHA-1 of the files direct Vercel deployments load at runtime.
 export default {
   "repo": "seungyeon5141-cmyk/classplant",
-  "commit": "35a4c823921afa4594996aa03c19ebaeaec925ee",
+  "commit": "80337b8f68e3bc2abb49c52bedf3b8cad72d9381",
   "files": {
-    "lib/schema.js": "3782afff57ecfd30b92f4ecd37f6b80278401551",
-    "lib/vercel-env.js": "ddbb2039459a03b930cebf2bf18206182cbb4a7c",
-    "worker-src/index.js": "c0fb66e72c1d813ff2b82cc9c6e3f10564d17d1c",
-    "worker-src/html.js": "aae837e2e1757dc6901a2dd7b19795cd0ea350d6",
-    "worker-src/client.js": "ddf85407d36de04a100bb1188d0781ce59b64bca",
-    "worker-src/styles.js": "16df028d876d56adfa9e6ba059a29650e188ece9"
+    "lib/schema.js": "d8c2441821a8982d8b3ad5cca17f91051ceb3538",
+    "lib/vercel-env.js": "2f607b5faef0ff8ce49f9a892da2819df2b7ffef",
+    "worker-src/index.js": "5e474fe774fdcbb3154cdd08b6e4ad9f033c96a8",
+    "worker-src/html.js": "c5b32e0d93a2b41f11ba05d2d0d75afc19e386b7",
+    "worker-src/client.js": "6490737d934e4392485ed801d293d9d990d3891e",
+    "worker-src/styles.js": "29b9e14a57b91329840e9f2240cf5e71bce5c161"
   }
 };
