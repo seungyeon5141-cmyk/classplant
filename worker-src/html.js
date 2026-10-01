@@ -2,7 +2,7 @@ export const APP_HTML = String.raw`<!doctype html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>우리 반 식물 관찰일지</title><meta name="description" content="식물을 기르며 사진과 관찰 내용을 단계별로 기록하는 학급용 관찰일지">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%232d7a4a'/%3E%3Ctext x='32' y='44' font-size='38' text-anchor='middle'%3E🌱%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="/assets/styles.css?v=11"><script src="/assets/app.js?v=11" defer></script></head>
+<link rel="stylesheet" href="/assets/styles.css?v=12"><script src="/assets/app.js?v=12" defer></script></head>
 <body>
 <div id="gate" class="gate"><div class="gate-shell"><section class="gate-hello"><span class="gate-badge">우리 반 작은 텃밭</span><div class="gate-garden" aria-hidden="true"><span>🌻</span><span>🌱</span><span>🍅</span></div><h1>오늘도 식물이<br>한 뼘 자랐어요!</h1><p>사진과 글로 매일의 작은 변화를 모아<br>우리 반만의 성장 이야기를 만들어요.</p><div class="gate-steps"><span>① 준비하기</span><span>② 관찰하기</span><span>③ 돌아보기</span></div></section><form id="gateForm" class="gate-card"><div class="gate-mark">🌱</div><p class="gate-kicker">반가워요!</p><h2>관찰일지 들어가기</h2><p>학급 코드, 이름, 네 자리 비밀번호를 입력해 주세요.</p>
 <label class="field"><span>학급 코드</span><input name="classCode" maxlength="20" required placeholder="예: HAETSAL-6-2" autocomplete="off"></label>

@@ -1,4 +1,4 @@
-// Postgres version of drizzle/0000~0002 (same tables and columns as the D1 schema).
+// Postgres version of drizzle/0000~0004 (same tables and columns as the D1 schema).
 export const SCHEMA_SQL = [
   `CREATE TABLE IF NOT EXISTS projects (
     id TEXT PRIMARY KEY NOT NULL,
@@ -23,7 +23,8 @@ export const SCHEMA_SQL = [
     grow_type TEXT NOT NULL DEFAULT 'individual',
     group_name TEXT NOT NULL DEFAULT '',
     member_names TEXT NOT NULL DEFAULT '',
-    owner_role TEXT NOT NULL DEFAULT 'student'
+    owner_role TEXT NOT NULL DEFAULT 'student',
+    cover_key TEXT
   )`,
   `CREATE TABLE IF NOT EXISTS observations (
     id TEXT PRIMARY KEY NOT NULL,
@@ -71,4 +72,5 @@ export const SCHEMA_SQL = [
 // Run on every cold start so databases created before a change get the new columns (drizzle/0003~).
 export const SCHEMA_UPGRADES = [
   `ALTER TABLE projects ADD COLUMN IF NOT EXISTS owner_role TEXT NOT NULL DEFAULT 'student'`,
+  `ALTER TABLE projects ADD COLUMN IF NOT EXISTS cover_key TEXT`,
 ];
